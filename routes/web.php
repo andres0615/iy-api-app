@@ -21,6 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/task/create', [TaskController::class, 'create'])->name('task.create');
+Route::get('/task/edit/{id}', [TaskController::class, 'edit'])->name('task.edit');
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');

@@ -57,12 +57,28 @@ class TaskController extends Controller
 
     public function edit($id)
     {
-        // Logic to create a task
+        return Inertia::render('EditTask', [
+            'task' => Task::findOrFail($id),
+        ]);
     }
 
     public function update(Request $request)
     {
-        // Logic to create a task
+        $requestData = $request->all();
+
+        $task = Task::findOrFail($requestData['id']);
+        $task->titulo = $requestData['titulo'];
+        $task->descripcion = $requestData['descripcion'];
+        $task->prioridad = $requestData['prioridad'];
+        $task->save();
+
+        $responseData = [
+            'success' => true,
+            'message' => 'Task updated successfully',
+            'task' => $task,
+        ];
+
+        return response()->json($responseData);
     }
 
     public function destroy($id)

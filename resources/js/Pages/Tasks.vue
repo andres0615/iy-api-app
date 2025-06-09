@@ -112,9 +112,17 @@ function getBadgeStatus(status) {
                                 <button class="btn btn-success btn-sm">
                                     <i class="fas fa-check"></i>
                                 </button>
-                                <button class="btn btn-warning btn-sm">
+                                <!-- <button class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
-                                </button>
+                                </button> -->
+                                <Link
+                                    :href="'/task/edit/' + task.id"
+                                    class="btn btn-warning btn-sm"
+                                    preserve-scroll
+                                    preserve-state
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </Link>
                                 <button class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i>
                                 </button>

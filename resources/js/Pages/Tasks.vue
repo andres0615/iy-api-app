@@ -4,6 +4,13 @@ import IyataLayout from '@/Layouts/IyataLayout.vue';
 import { reactive, ref, onMounted } from 'vue';
 
 const tasks = ref([]);
+const allTasks = ref([]);
+
+const filters = reactive({
+    estado: '',
+    prioridad: '',
+    titulo: ''
+});
 
 onMounted(async () => {
     getTasks();
@@ -23,9 +30,43 @@ async function getTasks(){
         return task;
     });
 
-    tasks.value = respTasks;
+    allTasks.value = respTasks;
+
+    filterTasks();
+
+    // tasks.value = respTasks;
 
     // console.log(tasks.value);
+}
+
+function filterTasks() {
+
+    let filteredTasks = allTasks.value.filter(task => {
+
+        if(filters.estado.length > 0){
+            if(task.estado !== filters.estado) {
+                return false;
+            }
+        }
+
+        if(filters.prioridad.length > 0){
+            if(task.prioridad !== filters.prioridad) {
+                return false;
+            }
+        }
+
+        if(filters.titulo.length > 0){
+            if(!task.titulo.toLowerCase().includes(filters.titulo.toLowerCase())) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
+    tasks.value = filteredTasks;
+    
+    return true;
 }
 
 async function deleteTask(id) {
@@ -85,23 +126,22 @@ function getBadgeStatus(status) {
                     <!-- Filtros -->
                     <div class="row mb-4">
                         <div class="col-md-4">
-                            <select class="form-select">
-                                <option>Todas las tareas</option>
-                                <option>Pendientes</option>
-                                <option>Completadas</option>
-                                <option>Vencidas</option>
+                            <select class="form-select" v-model="filters.estado" @change="filterTasks()">
+                                <option value="">Todas las tareas</option>
+                                <option value="PENDIENTE">Pendientes</option>
+                                <option value="COMPLETADA">Completadas</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select class="form-select">
-                                <option>Todas las prioridades</option>
-                                <option>Alta</option>
-                                <option>Media</option>
-                                <option>Baja</option>
+                            <select class="form-select" v-model="filters.prioridad" @change="filterTasks()">
+                                <option value="">Todas las prioridades</option>
+                                <option value="ALTA">Alta</option>
+                                <option value="MEDIA">Media</option>
+                                <option value="BAJA">Baja</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Buscar tareas...">
+                            <input type="text" class="form-control" placeholder="Buscar tareas..." v-model="filters.titulo" @input="filterTasks()">
                         </div>
                     </div>
 

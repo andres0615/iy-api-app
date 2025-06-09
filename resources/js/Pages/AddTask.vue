@@ -6,7 +6,8 @@ import { reactive, ref, onMounted } from 'vue';
 const task = reactive({
     titulo: '',
     descripcion: '',
-    prioridad: ''
+    prioridad: '',
+    errors: {}
 });
 
 function getBadgePriority(priority) {
@@ -38,6 +39,11 @@ function getPriorityLabel(priority) {
 
 async function saveTask(){
 
+    if (!validate()) {
+        // si hay errores, detenemos el envío
+        return
+    }
+
     let response = await axios.post('/api/task', task);
 
     console.log(response);
@@ -54,6 +60,16 @@ async function saveTask(){
     } else {
         // Handle error
         console.error('Error al guardar la tarea:', response.data.message);
+    }
+}
+
+function validate(){
+    task.errors = {}  // reset
+
+    console.log(task);
+
+    if (!task.titulo) {
+        task.errors.name = 'El nombre es obligatorio'
     }
 }
 
@@ -74,19 +90,22 @@ async function saveTask(){
                             <div class="col-md-8">
                                 <div class="mb-3">
                                     <label for="taskTitle" class="form-label">Título de la tarea</label>
-                                    <input type="text" class="form-control" v-model="task.titulo" id="taskTitle" placeholder="Ingresa el título de la tarea" required>
+                                    <input type="text" class="form-control" v-model="task.titulo" id="taskTitle" placeholder="Ingresa el título de la tarea" >
+                                    <div v-if="task?.errors?.titulo" class="invalid-feedback d-block">
+                                        {{ task.errors.titulo }}
+                                    </div>
                                 </div>
                                 
                                 <div class="mb-3">
                                     <label for="taskDescription" class="form-label">Descripción</label>
-                                    <textarea class="form-control" v-model="task.descripcion" id="taskDescription" rows="4" placeholder="Describe los detalles de la tarea" required></textarea>
+                                    <textarea class="form-control" v-model="task.descripcion" id="taskDescription" rows="4" placeholder="Describe los detalles de la tarea" ></textarea>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="taskPriority" class="form-label">Prioridad</label>
-                                            <select class="form-select" id="taskPriority" v-model="task.prioridad" required>
+                                            <select class="form-select" id="taskPriority" v-model="task.prioridad" >
                                                 <option value="">Seleccionar prioridad</option>
                                                 <option value="ALTA">Alta</option>
                                                 <option value="MEDIA">Media</option>

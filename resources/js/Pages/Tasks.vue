@@ -30,11 +30,11 @@ async function getTasks(){
 
 function getBadgePriority(priority) {
     switch (priority) {
-        case 'Alta':
+        case 'ALTA':
             return 'badge-priority-high';
-        case 'Media':
+        case 'MEDIA':
             return 'badge-priority-medium';
-        case 'Baja':
+        case 'BAJA':
             return 'badge-priority-low';
         default:
             return '';
@@ -43,9 +43,9 @@ function getBadgePriority(priority) {
 
 function getBadgeStatus(status) {
     switch (status) {
-        case 'Pendiente':
+        case 'PENDIENTE':
             return 'badge-status-pending';
-        case 'Completada':
+        case 'COMPLETADA':
             return 'badge-status-completed';
         default:
             return '';
@@ -104,8 +104,8 @@ function getBadgeStatus(status) {
                                 <div class="todo-title">{{ task.titulo }}</div>
                                 <div class="todo-description">{{ task.descripcion }}</div>
                                 <div class="todo-meta">
-                                    <span class="badge badge-priority-high me-2">{{ task.prioridad }}</span>
-                                    <span class="badge badge-status-pending me-2">{{ task.estado }}</span>
+                                    <span :class="'badge me-2 ' + getBadgePriority(task.prioridad)">{{ task.prioridad }}</span>
+                                    <span :class="'badge me-2 ' + getBadgeStatus(task.estado)">{{ task.estado }}</span>
                                 </div>
                             </div>
                             <div class="btn-group">

@@ -33,7 +33,22 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        // Logic to create a task
+        $requestData = $request->all();
+
+        $task = new Task();
+        $task->titulo = $requestData['titulo'];
+        $task->descripcion = $requestData['descripcion'];
+        $task->prioridad = $requestData['prioridad'];
+        $task->estado = 'PENDIENTE';
+        $task->save();
+
+        $responseData = [
+            'success' => true,
+            'message' => 'Task created successfully',
+            'task' => $task,
+        ];
+
+        return response()->json($responseData);
     }
 
     public function show($id){

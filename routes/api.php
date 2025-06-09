@@ -9,3 +9,4 @@ use App\Http\Controllers\TaskController;
 // })->middleware('auth:sanctum');
 
 Route::get('/task', [TaskController::class, 'index'])->name('task.index');
+Route::post('/task', [TaskController::class, 'store'])->name('task.store');

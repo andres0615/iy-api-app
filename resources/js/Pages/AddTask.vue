@@ -45,7 +45,12 @@ async function saveTask(){
     if(response.data.success){
         // Redirect to tasks page
         // Inertia.visit('/');
-        router.visit('/');
+        router.visit('/',{
+            data: {
+                success: 'La tarea se ha guardado correctamente.'
+            },
+            preserveState: true
+        });
     } else {
         // Handle error
         console.error('Error al guardar la tarea:', response.data.message);

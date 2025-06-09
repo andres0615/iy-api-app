@@ -48,6 +48,8 @@ class TaskController extends Controller
             'task' => $task,
         ];
 
+        session()->flash('success', 'Task created successfully');
+
         return response()->json($responseData);
     }
 
@@ -89,6 +91,20 @@ class TaskController extends Controller
         $responseData = [
             'success' => true,
             'message' => 'Task deleted successfully',
+        ];
+
+        return response()->json($responseData);
+    }
+
+    public function complete($id)
+    {
+        $task = Task::findOrFail($id);
+        $task->estado = 'COMPLETADA';
+        $task->save();
+
+        $responseData = [
+            'success' => true,
+            'message' => 'Task completed successfully',
         ];
 
         return response()->json($responseData);

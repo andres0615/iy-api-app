@@ -77,6 +77,14 @@ async function deleteTask(id) {
     }
 }
 
+async function completeTask(id) {
+    let response = await axios.post('/api/task/complete/' + id);
+
+    if(response.data.success) {
+        getTasks();
+    }
+}
+
 function getBadgePriority(priority) {
     switch (priority) {
         case 'ALTA':
@@ -157,7 +165,7 @@ function getBadgeStatus(status) {
                                 </div>
                             </div>
                             <div class="btn-group">
-                                <button class="btn btn-success btn-sm">
+                                <button class="btn btn-success btn-sm" @click="completeTask(task.id)" v-if="task.estado === 'PENDIENTE'">
                                     <i class="fas fa-check"></i>
                                 </button>
                                 <Link

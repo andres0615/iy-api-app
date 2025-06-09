@@ -1,5 +1,18 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const page = usePage();
+// const flash = computed(() => page.props.flash || {})
+const success = computed(() => page.props.success || '');
+
+const props = defineProps({
+  success: String
+})
+
+console.log(props);
+console.log(page);
+
 </script>
 
 <template>
@@ -48,6 +61,9 @@ import { Link } from '@inertiajs/vue3';
         <!-- Main Content -->
         <div class="main-container">
             <div class="container">
+                <div v-if="success" class="alert alert-success">
+                    {{ success }}
+                </div>
                 <transition name="fade" mode="out-in">
                     <slot />
                 </transition>

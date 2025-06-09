@@ -10,7 +10,7 @@ onMounted(async () => {
 });
 
 async function getTasks(){
-    const response = await axios.get('/api/task');
+    let response = await axios.get('/api/task');
 
     console.log(response.data.tasks);
 
@@ -26,6 +26,14 @@ async function getTasks(){
     tasks.value = respTasks;
 
     // console.log(tasks.value);
+}
+
+async function deleteTask(id) {
+    let response = await axios.delete('/api/task/' + id);
+
+    if(response.data.success) {
+        getTasks();
+    }
 }
 
 function getBadgePriority(priority) {
@@ -112,9 +120,6 @@ function getBadgeStatus(status) {
                                 <button class="btn btn-success btn-sm">
                                     <i class="fas fa-check"></i>
                                 </button>
-                                <!-- <button class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </button> -->
                                 <Link
                                     :href="'/task/edit/' + task.id"
                                     class="btn btn-warning btn-sm"
@@ -123,7 +128,7 @@ function getBadgeStatus(status) {
                                 >
                                     <i class="fas fa-edit"></i>
                                 </Link>
-                                <button class="btn btn-danger btn-sm">
+                                <button class="btn btn-danger btn-sm" @click="deleteTask(task.id)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
